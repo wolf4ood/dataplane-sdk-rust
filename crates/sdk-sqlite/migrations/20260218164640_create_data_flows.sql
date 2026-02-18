@@ -1,0 +1,22 @@
+
+
+
+CREATE TABLE IF NOT EXISTS data_flows (
+    id TEXT PRIMARY KEY,
+    participant_context_id TEXT NOT NULL,
+    transfer_type TEXT NOT NULL,
+    agreement_id TEXT NOT NULL,
+    dataset_id TEXT NOT NULL,
+    participant_id TEXT NOT NULL,
+    dataspace_context TEXT NOT NULL,
+    counter_party_id TEXT NOT NULL,
+    callback_address TEXT NOT NULL,
+    state TEXT NOT NULL,
+    data_address TEXT NOT NULL,
+    suspension_reason TEXT,
+    termination_reason TEXT,
+    metadata TEXT NOT NULL DEFAULT '{}',
+    labels TEXT NOT NULL DEFAULT '[]',
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+)
