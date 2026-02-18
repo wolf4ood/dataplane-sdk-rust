@@ -10,7 +10,10 @@
 //         Metaform Systems, Inc. - initial API and implementation
 //
 
-pub mod data_address;
-pub mod data_flow;
-pub mod messages;
-pub mod participant;
+use bon::Builder;
+
+#[derive(Debug, Clone, Builder)]
+#[builder(on(String, into))]
+pub struct ParticipantContext {
+    pub id: String,
+}

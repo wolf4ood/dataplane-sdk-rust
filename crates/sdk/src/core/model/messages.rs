@@ -1,3 +1,15 @@
+//  Copyright (c) 2026 Metaform Systems, Inc
+//
+//  This program and the accompanying materials are made available under the
+//  terms of the Apache License, Version 2.0 which is available at
+//  https://www.apache.org/licenses/LICENSE-2.0
+//
+//    SPDX-License-Identifier: Apache-2.0
+//
+//    Contributors:
+//         Metaform Systems, Inc. - initial API and implementation
+//
+
 use std::collections::HashMap;
 
 use bon::Builder;
@@ -47,6 +59,7 @@ pub struct DataFlowPrepareMessage {
 
 #[derive(Debug, Builder, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
+#[builder(on(String, into))]
 pub struct DataFlowResponseMessage {
     pub dataplane_id: String,
     pub data_address: Option<DataAddress>,
@@ -74,8 +87,9 @@ pub struct DataFlowSuspendMessage {
     pub reason: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, Builder)]
 #[serde(rename_all = "camelCase")]
+#[builder(on(String, into))]
 pub struct DataFlowTerminateMessage {
     pub reason: Option<String>,
 }

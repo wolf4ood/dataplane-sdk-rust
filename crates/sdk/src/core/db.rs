@@ -10,7 +10,8 @@
 //         Metaform Systems, Inc. - initial API and implementation
 //
 
-pub mod data_address;
 pub mod data_flow;
-pub mod messages;
-pub mod participant;
+pub mod tx;
+
+#[cfg(feature = "test")]
+pub mod test_suite;

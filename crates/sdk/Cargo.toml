@@ -11,6 +11,17 @@ serde.workspace=true
 serde_json.workspace=true
 bon.workspace=true
 chrono.workspace=true
+thiserror.workspace=true
+async-trait.workspace=true
+uuid = { workspace=true, optional = true}
+
+[features]
+test = ["dep:uuid"]
+
+
+[dev-dependencies]
+mockall.workspace=true
+tokio.workspace=true
 
 [lints]
 workspace = true
