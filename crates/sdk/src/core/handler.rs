@@ -38,6 +38,7 @@ pub trait DataFlowHandler: Send + Sync {
     ) -> HandlerResult<DataFlowResponseMessage>;
 
     async fn on_terminate(&self, tx: &mut Self::Transaction, flow: &DataFlow) -> HandlerResult<()>;
+    async fn on_started(&self, tx: &mut Self::Transaction, flow: &DataFlow) -> HandlerResult<()>;
 
     async fn on_suspend(&self, tx: &mut Self::Transaction, flow: &DataFlow) -> HandlerResult<()>;
 }

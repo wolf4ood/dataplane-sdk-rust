@@ -108,6 +108,12 @@ mock! {
             tx: &mut MockTx,
             flow: &DataFlow,
         ) -> HandlerResult<()>;
+
+        async fn on_started(
+            &self,
+            tx: &mut MockTx,
+            flow: &DataFlow,
+        ) -> HandlerResult<()>;
     }
 }
 

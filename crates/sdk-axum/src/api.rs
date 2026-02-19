@@ -19,7 +19,8 @@ use dataplane_sdk::{
         db::tx::TransactionalContext,
         model::{
             messages::{
-                DataFlowResponseMessage, DataFlowStartMessage, DataFlowSuspendMessage,
+                DataFlowPrepareMessage, DataFlowResponseMessage, DataFlowStartMessage,
+                DataFlowStartedNotificationMessage, DataFlowSuspendMessage,
                 DataFlowTerminateMessage,
             },
             participant::ParticipantContext,
@@ -33,13 +34,38 @@ use crate::error::SignalingResult;
 pub async fn start_flow<C>(
     State(sdk): State<DataPlaneSdk<C>>,
     Extension(participant): Extension<ParticipantContext>,
-    Json(flow): Json<DataFlowStartMessage>,
+    Json(msg): Json<DataFlowStartMessage>,
 ) -> SignalingResult<Json<DataFlowResponseMessage>>
 where
     C: TransactionalContext,
 {
-    let response = sdk.start(&participant.id, flow).await?;
+    let response = sdk.start(&participant.id, msg).await?;
     Ok(Json(response))
+}
+
+pub async fn prepare_flow<C>(
+    State(sdk): State<DataPlaneSdk<C>>,
+    Extension(participant): Extension<ParticipantContext>,
+    Json(msg): Json<DataFlowPrepareMessage>,
+) -> SignalingResult<Json<DataFlowResponseMessage>>
+where
+    C: TransactionalContext,
+{
+    let response = sdk.prepare(&participant.id, msg).await?;
+    Ok(Json(response))
+}
+
+pub async fn started_flow<C>(
+    State(sdk): State<DataPlaneSdk<C>>,
+    Extension(participant): Extension<ParticipantContext>,
+    Path(id): Path<String>,
+    Json(msg): Json<DataFlowStartedNotificationMessage>,
+) -> SignalingResult<()>
+where
+    C: TransactionalContext,
+{
+    sdk.started(&participant.id, &id, msg).await?;
+    Ok(())
 }
 
 pub async fn terminate_flow<C>(

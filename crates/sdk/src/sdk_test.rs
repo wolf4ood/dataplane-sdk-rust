@@ -109,6 +109,13 @@ mod prepare {
             ))))
         });
 
+        handler.expect_on_prepare().returning(|_, _| {
+            Box::pin(future::ready(Ok(DataFlowResponseMessage::builder()
+                .state(DataFlowState::Started)
+                .dataplane_id("dataplane-id")
+                .build())))
+        });
+
         handler
             .expect_can_handle()
             .returning(|_| Box::pin(future::ready(Ok(true))));

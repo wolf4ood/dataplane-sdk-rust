@@ -20,7 +20,10 @@ use crate::{
         handler::DataFlowHandler,
         model::{
             data_flow::{DataFlow, DataFlowState},
-            messages::{DataFlowPrepareMessage, DataFlowResponseMessage, DataFlowStartMessage},
+            messages::{
+                DataFlowPrepareMessage, DataFlowResponseMessage, DataFlowStartMessage,
+                DataFlowStartedNotificationMessage,
+            },
         },
     },
     error::{SdkError, SdkResult},
@@ -79,7 +82,7 @@ where
         participant_context_id: &str,
         req: DataFlowPrepareMessage,
     ) -> SdkResult<DataFlowResponseMessage> {
-        let flow = DataFlow::builder()
+        let mut flow = DataFlow::builder()
             .id(req.process_id)
             .counter_party_id(req.counter_party_id)
             .participant_context_id(participant_context_id)
@@ -96,8 +99,9 @@ where
 
         if self.handler.can_handle(&flow).await? {
             let mut tx = self.ctx.begin().await?;
-            self.repo.create(&mut tx, &flow).await?;
             let response = self.handler.on_prepare(&mut tx, &flow).await?;
+            flow.transition_to_prepared()?;
+            self.repo.create(&mut tx, &flow).await?;
             tx.commit().await?;
 
             Ok(response)
@@ -114,6 +118,7 @@ where
         flow_id: &str,
         reason: Option<String>,
     ) -> SdkResult<()> {
+        dbg!("Terminating");
         let mut tx = self.ctx.begin().await?;
         let mut flow = self
             .repo
@@ -125,6 +130,30 @@ where
         self.repo.update(&mut tx, &flow).await?;
 
         self.handler.on_terminate(&mut tx, &flow).await?;
+
+        tx.commit().await?;
+        Ok(())
+    }
+
+    pub async fn started(
+        &self,
+        _ctx: &str,
+        flow_id: &str,
+        msg: DataFlowStartedNotificationMessage,
+    ) -> SdkResult<()> {
+        let mut tx = self.ctx.begin().await?;
+        let mut flow = self
+            .repo
+            .fetch_by_id(&mut tx, flow_id)
+            .await?
+            .ok_or_else(|| DbError::NotFound(flow_id.to_string()))?;
+
+        flow.data_address = msg.data_address;
+
+        self.handler.on_started(&mut tx, &flow).await?;
+
+        flow.transition_to_started()?;
+        self.repo.update(&mut tx, &flow).await?;
 
         tx.commit().await?;
         Ok(())

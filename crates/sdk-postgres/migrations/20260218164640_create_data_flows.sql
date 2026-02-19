@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS data_flows (
     counter_party_id TEXT NOT NULL,
     callback_address TEXT NOT NULL,
     state data_flow_state NOT NULL,
-    data_address JSONB NOT NULL,
+    data_address JSONB ,
     suspension_reason TEXT,
     termination_reason TEXT,
     metadata JSONB NOT NULL DEFAULT '{}',

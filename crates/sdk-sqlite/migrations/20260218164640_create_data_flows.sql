@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS data_flows (
     counter_party_id TEXT NOT NULL,
     callback_address TEXT NOT NULL,
     state TEXT NOT NULL,
-    data_address TEXT NOT NULL,
+    data_address TEXT,
     suspension_reason TEXT,
     termination_reason TEXT,
     metadata TEXT NOT NULL DEFAULT '{}',

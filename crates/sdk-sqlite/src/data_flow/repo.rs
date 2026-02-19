@@ -46,7 +46,7 @@ impl DataFlowRepo for SqliteDataFlowRepo {
         .bind(&flow.agreement_id)
         .bind(DbDataFlowState::from(flow.state.clone()))
         .bind(&flow.transfer_type)
-        .bind(Json(flow.data_address.clone()))
+        .bind(flow.data_address.clone().map(Json))
         .bind(&flow.callback_address)
         .bind(Json(flow.labels.clone()))
         .bind(Json(flow.metadata.clone()))

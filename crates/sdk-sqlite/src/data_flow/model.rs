@@ -47,8 +47,13 @@ pub struct DataFlow {
 #[derive(Clone, Debug, sqlx::Type, PartialEq)]
 #[sqlx(type_name = "data_flow_state", rename_all = "snake_case")]
 pub enum DataFlowState {
+    Initiating,
+    Preparing,
+    Prepared,
+    Starting,
     Started,
     Suspended,
+    Completed,
     Terminated,
 }
 
@@ -78,6 +83,11 @@ impl From<DataFlowState> for dataplane_sdk::core::model::data_flow::DataFlowStat
             DataFlowState::Started => Self::Started,
             DataFlowState::Suspended => Self::Suspended,
             DataFlowState::Terminated => Self::Terminated,
+            DataFlowState::Initiating => Self::Initiating,
+            DataFlowState::Preparing => Self::Preparing,
+            DataFlowState::Prepared => Self::Prepared,
+            DataFlowState::Starting => Self::Starting,
+            DataFlowState::Completed => Self::Completed,
         }
     }
 }
@@ -88,11 +98,11 @@ impl From<dataplane_sdk::core::model::data_flow::DataFlowState> for DataFlowStat
             dataplane_sdk::core::model::data_flow::DataFlowState::Started => Self::Started,
             dataplane_sdk::core::model::data_flow::DataFlowState::Suspended => Self::Suspended,
             dataplane_sdk::core::model::data_flow::DataFlowState::Terminated => Self::Terminated,
-            dataplane_sdk::core::model::data_flow::DataFlowState::Initiating => todo!(),
-            dataplane_sdk::core::model::data_flow::DataFlowState::Preparing => todo!(),
-            dataplane_sdk::core::model::data_flow::DataFlowState::Prepared => todo!(),
-            dataplane_sdk::core::model::data_flow::DataFlowState::Starting => todo!(),
-            dataplane_sdk::core::model::data_flow::DataFlowState::Completed => todo!(),
+            dataplane_sdk::core::model::data_flow::DataFlowState::Initiating => Self::Initiating,
+            dataplane_sdk::core::model::data_flow::DataFlowState::Preparing => Self::Preparing,
+            dataplane_sdk::core::model::data_flow::DataFlowState::Prepared => Self::Prepared,
+            dataplane_sdk::core::model::data_flow::DataFlowState::Starting => Self::Starting,
+            dataplane_sdk::core::model::data_flow::DataFlowState::Completed => Self::Completed,
         }
     }
 }
