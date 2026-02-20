@@ -1,0 +1,30 @@
+[package]
+name = "sync-pull-dataplane"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+example-common= { path="../example-common" }
+dataplane-sdk= { path="../../crates/sdk" }
+dataplane-sdk-sqlite= { path="../../crates/sdk-sqlite" }
+dataplane-sdk-postgres= { path="../../crates/sdk-postgres" }
+dataplane-sdk-axum= { path="../../crates/sdk-axum" }
+tokio.workspace=true
+anyhow.workspace=true
+tracing.workspace=true
+tracing-subscriber.workspace=true
+axum.workspace=true
+axum-extra.workspace=true
+bon.workspace=true
+sqlx.workspace=true
+uuid.workspace=true
+serde.workspace=true
+chrono.workspace=true
+thiserror.workspace=true
+reqwest.workspace=true
+serde_json.workspace=true
+async-trait.workspace=true
+base64 = "0.22.1"
+config = "0.15.13"
+tower-http = { version = "0.6.6", features = ["trace"]}

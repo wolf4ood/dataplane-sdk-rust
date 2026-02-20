@@ -1,0 +1,16 @@
+
+[signaling]
+port = 3000
+
+[public_api]
+port = 8789
+api_url = "http://localhost:8789"
+
+[token_api]
+port = 8790
+
+[db.sqlite]
+url = "sqlite::memory:"
+
+# [db.postgres]
+# url = "postgresql://cp:controlplane@localhost:5432/dp"

@@ -1,0 +1,12 @@
+
+[signaling]
+port = 3001
+
+[public_api]
+port = 8791
+
+[token_api]
+port = 8792
+
+[db.sqlite]
+url = "sqlite::memory:"

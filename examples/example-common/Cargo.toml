@@ -1,0 +1,21 @@
+[package]
+name = "example-common"
+license.workspace = true
+edition.workspace = true
+version.workspace = true
+authors.workspace = true
+
+[dependencies]
+dataplane-sdk= { path="../../crates/sdk" }
+dataplane-sdk-axum= { path="../../crates/sdk-axum" }
+tokio.workspace=true
+tracing.workspace=true
+axum.workspace=true
+bon.workspace=true
+anyhow.workspace=true
+reqwest.workspace=true
+uuid.workspace=true
+tower-http = { version = "0.6.6", features = ["trace"]}
+
+[lints]
+workspace = true
