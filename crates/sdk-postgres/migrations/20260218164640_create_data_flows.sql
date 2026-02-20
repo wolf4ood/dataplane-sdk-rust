@@ -1,4 +1,4 @@
-CREATE TYPE data_flow_state AS ENUM ('started','suspended','terminated','completed');
+CREATE TYPE data_flow_state AS ENUM ('started','suspended','terminated','completed', 'initiating', 'initiated', 'preparing');
 
 
 CREATE TABLE IF NOT EXISTS data_flows (

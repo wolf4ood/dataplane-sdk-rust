@@ -34,7 +34,7 @@ impl DataFlowRepo for SqliteDataFlowRepo {
         let result = sqlx::query(
             r#"
             INSERT INTO data_flows (id, participant_id, dataspace_context, participant_context_id, counter_party_id, dataset_id, agreement_id, state, transfer_type, data_address, callback_address, labels, metadata, created_at, updated_at)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             "#,
         )
         .bind(&flow.id)
@@ -71,7 +71,7 @@ impl DataFlowRepo for SqliteDataFlowRepo {
     ) -> DbResult<Option<DataFlow>> {
         Ok(sqlx::query_as::<_, DbDataFlow>(
             r#"
-            SELECT * FROM data_flows where id = $1
+            SELECT * FROM data_flows where id = ?
             "#,
         )
         .bind(flow_id)
@@ -84,7 +84,7 @@ impl DataFlowRepo for SqliteDataFlowRepo {
     async fn delete(&self, tx: &mut Self::Transaction, flow_id: &str) -> DbResult<()> {
         let rows = sqlx::query(
             r#"
-            DELETE FROM data_flows where id = $1
+            DELETE FROM data_flows where id = ?
             "#,
         )
         .bind(flow_id)
@@ -106,8 +106,8 @@ impl DataFlowRepo for SqliteDataFlowRepo {
     async fn update(&self, tx: &mut Self::Transaction, flow: &DataFlow) -> DbResult<()> {
         let rows = sqlx::query(
             r#"
-            UPDATE data_flows SET state=$1
-            WHERE id = $2
+            UPDATE data_flows SET state=?
+            WHERE id = ?
             "#,
         )
         .bind(DbDataFlowState::from(flow.state.clone()))

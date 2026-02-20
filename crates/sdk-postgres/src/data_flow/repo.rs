@@ -130,7 +130,10 @@ impl DataFlowRepo for PgDataFlowRepo {
 
 impl PgDataFlowRepo {
     pub async fn migrate(&self, tx: &mut PgTransaction) -> DbResult<()> {
-        sqlx::migrate!("./migrations")
+        let mut migrator = sqlx::migrate!("./migrations");
+        migrator.set_ignore_missing(true);
+
+        migrator
             .run(&mut *tx.0)
             .await
             .map_err(|err| DbError::Generic(Box::new(err)))?;
