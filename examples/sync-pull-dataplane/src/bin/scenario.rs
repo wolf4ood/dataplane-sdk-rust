@@ -35,15 +35,14 @@ async fn main() -> anyhow::Result<()> {
     let dataset_id = Uuid::new_v4().to_string();
     let process_id = Uuid::new_v4().to_string();
 
-    cp
-        .consumer_prepare(
-            DataPlaneRequest::builder()
-                .dataset_id(dataset_id.clone())
-                .process_id(process_id.clone())
-                .agreement_id("example-agreement")
-                .build(),
-        )
-        .await?;
+    cp.consumer_prepare(
+        DataPlaneRequest::builder()
+            .dataset_id(dataset_id.clone())
+            .process_id(process_id.clone())
+            .agreement_id("example-agreement")
+            .build(),
+    )
+    .await?;
 
     let data_address = cp
         .provider_start(
