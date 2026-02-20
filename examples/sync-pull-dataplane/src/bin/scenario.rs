@@ -28,8 +28,8 @@ async fn main() -> anyhow::Result<()> {
     let cfg = load_config::<ScenarioConfig>()?;
 
     let cp = ControlPlaneSimulator::builder()
-        .consumer(cfg.consumer)
-        .provider(cfg.provider)
+        .consumer(cfg.consumer_url)
+        .provider(cfg.provider_url)
         .build();
 
     let dataset_id = Uuid::new_v4().to_string();
@@ -57,7 +57,7 @@ async fn main() -> anyhow::Result<()> {
     cp.consumer_started(&process_id, data_address).await?;
 
     let client = AppClient::builder()
-        .base_url("http://localhost:8792")
+        .base_url(cfg.consumer_token_url)
         .build();
 
     let data = client.get_data(&dataset_id).await?;

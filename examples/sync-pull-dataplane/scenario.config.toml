@@ -1,2 +1,3 @@
-consumer="http://localhost:3001/api/v1"
-provider="http://localhost:3000/api/v1"
+consumer_url="http://localhost:3001/api/v1"
+consumer_token_url="http://localhost:8792"
+provider_url="http://localhost:3000/api/v1"

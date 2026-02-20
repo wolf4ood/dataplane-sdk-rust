@@ -20,8 +20,9 @@ use serde::{Deserialize, de::DeserializeOwned};
 
 #[derive(Deserialize, Clone)]
 pub struct ScenarioConfig {
-    pub consumer: String,
-    pub provider: String,
+    pub consumer_url: String,
+    pub provider_url: String,
+    pub consumer_token_url: String,
 }
 
 #[derive(Deserialize, Clone)]
