@@ -82,7 +82,14 @@ pub async fn setup_postgres_container() -> (PgContext, testcontainers::Container
 mod postgres {
     use super::PgTester;
     use dataplane_sdk::core::db::test_suite::Tester;
+    use dataplane_sdk::core::db::test_suite::create_rollback;
     use dataplane_sdk::core::db::test_suite::generate_data_flow_store_tests;
 
     generate_data_flow_store_tests!(PgTester);
+
+    #[tokio::test]
+    async fn data_flow_create_rollback() {
+        let tester = PgTester::create().await;
+        create_rollback(tester).await
+    }
 }

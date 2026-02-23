@@ -58,7 +58,7 @@ pub struct TokenApi {
 #[derive(Deserialize, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum Db {
-    Sqlite { url: String },
+    Memory,
     Postgres { url: String },
 }
 

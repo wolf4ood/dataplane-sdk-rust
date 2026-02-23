@@ -11,6 +11,7 @@
 //
 
 use crate::core::{error::DbResult, model::data_flow::DataFlow};
+pub mod memory;
 
 #[cfg(test)]
 use crate::core::db::tx::MockTransaction;

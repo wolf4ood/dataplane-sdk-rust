@@ -17,20 +17,21 @@ use crate::config::DataPlaneConfig;
 use crate::handler::TokenHandler;
 use crate::tokens::manager::TokenManager;
 use crate::tokens::repo::TokenRepo;
+use crate::tokens::repo::memory::MemoryTokenRepo;
 use crate::tokens::repo::postgres::PgTokenRepo;
-use crate::tokens::repo::sqlite::SqliteTokenRepo;
 use dataplane_sdk::core::db::data_flow::DataFlowRepo;
+use dataplane_sdk::core::db::data_flow::memory::MemoryDataFlowRepo;
+use dataplane_sdk::core::db::memory::MemoryContext;
 use dataplane_sdk::core::db::tx::{Transaction, TransactionalContext};
 use dataplane_sdk::sdk::DataPlaneSdk;
 use dataplane_sdk_postgres::{PgContext, PgDataFlowRepo};
-use dataplane_sdk_sqlite::{SqliteContext, SqliteDataFlowRepo};
 use example_common::signaling::start_signaling;
 use tokio::sync::Barrier;
 
 pub async fn start_dataplane(cfg: DataPlaneConfig) -> anyhow::Result<()> {
     match &cfg.db {
-        crate::config::Db::Sqlite { url } => {
-            let (ctx, repo, token_repo) = setup_sqlite(url).await?;
+        crate::config::Db::Memory => {
+            let (ctx, repo, token_repo) = setup_memory().await?;
             internal_launch(&cfg, ctx, repo, token_repo).await
         }
         crate::config::Db::Postgres { url } => {
@@ -40,19 +41,11 @@ pub async fn start_dataplane(cfg: DataPlaneConfig) -> anyhow::Result<()> {
     }
 }
 
-async fn setup_sqlite(
-    url: &str,
-) -> anyhow::Result<(SqliteContext, SqliteDataFlowRepo, SqliteTokenRepo)> {
-    let ctx = SqliteContext::connect(url).await?;
+async fn setup_memory() -> anyhow::Result<(MemoryContext, MemoryDataFlowRepo, MemoryTokenRepo)> {
+    let ctx = MemoryContext;
 
-    let mut tx = ctx.begin().await?;
-    let repo = SqliteDataFlowRepo;
-    let token_repo = SqliteTokenRepo;
-
-    repo.migrate(&mut tx).await?;
-    token_repo.migrate(&mut tx).await?;
-
-    tx.commit().await?;
+    let repo = MemoryDataFlowRepo::default();
+    let token_repo = MemoryTokenRepo::default();
 
     Ok((ctx, repo, token_repo))
 }

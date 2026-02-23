@@ -7,7 +7,6 @@ edition.workspace = true
 [dependencies]
 example-common= { path="../example-common" }
 dataplane-sdk= { path="../../crates/sdk" }
-dataplane-sdk-sqlite= { path="../../crates/sdk-sqlite" }
 dataplane-sdk-postgres= { path="../../crates/sdk-postgres" }
 dataplane-sdk-axum= { path="../../crates/sdk-axum" }
 tokio.workspace=true

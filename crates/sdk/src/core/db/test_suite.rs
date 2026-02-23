@@ -207,10 +207,6 @@ macro_rules! generate_data_flow_store_tests {
             data_flow_create_duplicate,
             $crate::core::db::test_suite::create_duplicate
         );
-        test!(
-            data_flow_create_rollback,
-            $crate::core::db::test_suite::create_rollback
-        );
         test!(data_flow_delete, $crate::core::db::test_suite::delete);
         test!(
             data_flow_delete_not_found,

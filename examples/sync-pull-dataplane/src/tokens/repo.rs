@@ -1,7 +1,7 @@
 use super::model::Token;
 
+pub mod memory;
 pub mod postgres;
-pub mod sqlite;
 
 #[async_trait::async_trait]
 pub trait TokenRepo: Send + Sync {
@@ -19,5 +19,5 @@ pub trait TokenRepo: Send + Sync {
         tx: &mut Self::Transaction,
         dataset_id: &str,
     ) -> anyhow::Result<Vec<Token>>;
-    async fn delete(&self, tx: &mut Self::Transaction, flow_id: &str) -> anyhow::Result<()>;
+    async fn delete(&self, tx: &mut Self::Transaction, id: &str) -> anyhow::Result<()>;
 }

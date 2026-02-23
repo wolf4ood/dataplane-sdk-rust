@@ -11,6 +11,7 @@
 //
 
 pub mod data_flow;
+pub mod memory;
 pub mod tx;
 
 #[cfg(feature = "test")]
