@@ -19,6 +19,10 @@ use sqlx::{PgPool, Postgres};
 pub struct PgContext(PgPool);
 
 impl PgContext {
+    pub fn new(pool: PgPool) -> Self {
+        PgContext(pool)
+    }
+
     pub async fn connect(database_url: &str) -> Result<Self, sqlx::Error> {
         let pool = PgPool::connect(database_url).await?;
         Ok(PgContext(pool))
