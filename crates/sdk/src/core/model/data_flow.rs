@@ -13,6 +13,7 @@
 use std::collections::HashMap;
 
 use bon::Builder;
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use thiserror::Error;
@@ -42,9 +43,9 @@ pub struct DataFlow {
     pub metadata: HashMap<String, Value>,
     #[builder(into)]
     pub data_address: Option<DataAddress>,
-    #[builder(default)]
+    #[builder(default = Utc::now())]
     pub created_at: chrono::DateTime<chrono::Utc>,
-    #[builder(default)]
+    #[builder(default = Utc::now())]
     pub updated_at: chrono::DateTime<chrono::Utc>,
 }
 

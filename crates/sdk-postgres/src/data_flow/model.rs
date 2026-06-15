@@ -13,6 +13,7 @@
 use std::collections::HashMap;
 
 use bon::Builder;
+use chrono::Utc;
 use serde_json::Value;
 use sqlx::{FromRow, types::Json};
 
@@ -40,9 +41,9 @@ pub struct DataFlow {
     pub data_address: Option<Json<DataAddress>>,
     #[builder(into)]
     pub labels: Json<Vec<String>>,
-    #[builder(default)]
+    #[builder(default = Utc::now())]
     pub created_at: chrono::DateTime<chrono::Utc>,
-    #[builder(default)]
+    #[builder(default = Utc::now())]
     pub updated_at: chrono::DateTime<chrono::Utc>,
 }
 
@@ -83,6 +84,8 @@ impl From<DataFlow> for dataplane_sdk::core::model::data_flow::DataFlow {
             .callback_address(flow.callback_address)
             .transfer_type(flow.transfer_type)
             .kind(flow.kind.into())
+            .created_at(flow.created_at)
+            .updated_at(flow.updated_at)
             .build()
     }
 }

@@ -10,6 +10,7 @@
 //         Metaform Systems, Inc. - initial API and implementation
 //
 
+use chrono::SubsecRound;
 use uuid::Uuid;
 
 use crate::core::{
@@ -54,6 +55,8 @@ pub fn create_data_flow(id: &str) -> DataFlow {
         .participant_id("participant_id")
         .callback_address("callback_address")
         .transfer_type("transfer_type")
+        .created_at(chrono::Utc::now().trunc_subsecs(6))
+        .updated_at(chrono::Utc::now().trunc_subsecs(6))
         .kind(DataFlowType::Provider)
         .build()
 }
@@ -67,6 +70,8 @@ where
 
     let id = Uuid::new_v4().to_string();
     let transfer = create_data_flow(&id);
+
+    dbg!(&transfer);
 
     store.create(&mut tx, &transfer).await.unwrap();
 
